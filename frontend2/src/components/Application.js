@@ -109,19 +109,10 @@ export const Application = () =>{
             return [entriesTableHeads, entriesTableRows]
 
     }
-    console.log(user)
 
     return(
 
         <div className='flex mt-10 ml-10 mr-10'>
-            <button className='btn btn-accent' onClick={async () =>{
-                 api.post("/api/add_watchlists/", {
-                     user: user.user_id,
-                     name: "Dangerous Stocks",
-                     tickers: JSON.stringify(["NIO", "PLTR", "F", "FB", "SBUX"]),
-                 })
-            }}>Click me</button>
-
             {/*Left side*/}
             <div>
 

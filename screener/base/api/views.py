@@ -48,35 +48,30 @@ def get_routes(request):
         "api/token",
         "api/token/refresh",
     ]
-
     return Response(routes)
 
 
-@api_view(["GET"])
+@api_view(["GET", "POST", "DELETE", "PUT"])
 @permission_classes([IsAuthenticated])
-def get_watchlists(request):
-    user = request.user
-    watchlists = user.watchlist_set.all()
-    serializer = WatchlistSerializer(watchlists, many=True)
-    return Response(serializer.data)
-
-
-@api_view(["POST"])
-@permission_classes([IsAuthenticated])
-def add_watchlists(request):
-    # user = request.user
-    # watchlists = user.watchlist_set.all()
-    serializer = WatchlistSerializer(data=request.data)
-    if serializer.is_valid():
-        serializer.save()
-        print(Response(serializer.data))
+def watchlist_actions(request):
+    if request.method == "GET":
+        user = request.user
+        watchlists = user.watchlist_set.all()
+        serializer = WatchlistSerializer(watchlists, many=True)
         return Response(serializer.data)
+    elif request.method == "POST":
+        serializer = WatchlistSerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
 
-    # return Response({"status": "Success"})
+    elif request.method == "DELETE":
+        print(request.data)
+        return Response({"status": "good"})
+
 
 
 @api_view(["GET"])
-# @permission_classes([IsAuthenticated])
 def get_general_market_data(request):
     return Response(general_market_data_request())
 
