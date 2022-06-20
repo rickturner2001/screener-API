@@ -4,13 +4,14 @@ import {Bar} from "react-chartjs-2"
 
 export const Table = ({tableData, classesOnValues, paginationvalue}) =>{
 
+
     let [tableHeads, tableRows] = tableData
+
     const [currentBatch, setCurrentBatch] = useState(1)
     let [currentTableRows, setCurrentTableRows] = useState(tableRows.slice(
         currentBatch * paginationvalue - paginationvalue, currentBatch * paginationvalue))
-    // 1 * 10 - 10, 1 * 10 -> (0, 10)
-    // 2 * 10 - 10, 2 * 10 -> 10, 20)
 
+    console.log(`(${currentBatch * paginationvalue - paginationvalue}, ${currentBatch * paginationvalue})`)
     const nextPage = () =>{
         setCurrentBatch(currentBatch + 1)
         setCurrentTableRows(tableRows.slice(
@@ -26,11 +27,11 @@ export const Table = ({tableData, classesOnValues, paginationvalue}) =>{
 
 
     return(
-        <div className='flex flex-col gap-6 justify-center items-center'>
+        <div className='flex flex-col gap-6 justify-center items-center w-[100%]'>
         <div className="overflow-x-auto">
             <table className="table table-zebra w-full">
                 <thead>
-                <tr>
+                <tr className='text-center'>
                     {tableHeads.map((head, index) => <th key={index}>{head}</th>)}
                 </tr>
                 </thead>
@@ -40,7 +41,7 @@ export const Table = ({tableData, classesOnValues, paginationvalue}) =>{
                     return <tr key={index + 600}>
                                 {rowData.map(((tableData, index) => {
                                     return <td className='' key={index}>
-                                        <p  key={index * -1} className={`text-center ${classesOnValues.constraint(tableData)}`}>{tableData}</p>
+                                        <p  key={index * -1} className={`text-center ${classesOnValues?.constraint(tableData)}`}>{tableData}</p>
                                     </td>
                                 }))}
                            </tr>
