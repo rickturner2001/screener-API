@@ -7,6 +7,7 @@ import {PrivateRoute} from "./utils/PrivateRoute";
 import {AuthProvider} from "./context/AuthContext";
 import {Navbar} from "./components/Navbar";
 import {Application} from "./components/Application";
+import {WatchLists} from "./pages/WatchLists";
 
 
 function App() {
@@ -17,6 +18,7 @@ function App() {
               <Navbar></Navbar>
               <Route component={HomePage} path='/' exact/>
               <PrivateRoute component={Application} path='/application'/>
+              <PrivateRoute component={WatchLists} path='/watchlists'/>
             <Route component={LoginPage} path='/login'/>
           </AuthProvider>
         </Router>

@@ -57,7 +57,7 @@ export const SignupModal = () => {
                     </button>
                     <button className={`btn btn-warning`} disabled={step === 0} onClick={(event) =>{
                         event.preventDefault()
-                        
+
                         backOneStep()
                     }}>Previous</button>
                 </div>

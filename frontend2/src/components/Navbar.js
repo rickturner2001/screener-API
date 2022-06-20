@@ -16,8 +16,8 @@ export const Navbar = (props) =>{
         // 👆 false parameter is required for react project
     }, [])
 
-    const navbarOptions = [['Home', "/home", false,], ["API", "", false], ["Report a bug", "", false],
-        ["Other", "", false], ["About", "", false]]
+    const navbarOptions = [['Home', "/application", false,], ["API", "", false], ["Report a bug", "", false],
+        ["Other", "", false], ["About", "", false], ["Watchlists", "/watchlists", false]]
     const [isOpen, setIsOpen] = useState(false)
     // const [isSigningUp, setIsSigningUp] = useState(false)
 
@@ -38,7 +38,7 @@ export const Navbar = (props) =>{
                                 </svg>
                             </label>
                             <ul
-                                className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52" style={!isOpen ? {}: {visibility: "visible", opacity: "1"}}>
+                                className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-300 rounded-box w-52" style={!isOpen ? {}: {visibility: "visible", opacity: "1"}}>
                                 {navbarOptions.map((option, index) => {
                                     const [text, href, _] = option
                                     return <li key={index * -1}><a key={index} href={href}>{text}</a></li>
