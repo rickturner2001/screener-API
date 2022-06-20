@@ -5,6 +5,10 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import WatchlistSerializer
 from base.api.market_data.api_requests import general_market_data_request
+from django.contrib.auth.models import User
+from .serializers import RegisterSerializer
+from rest_framework import generics
+from rest_framework.permissions import  AllowAny
 
 
 class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
@@ -27,6 +31,12 @@ class MyTokenObtainPairSerializer(TokenObtainPairSerializer):
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
+
+
+class RegisterView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    permission_classes = (AllowAny,)
+    serializer_class = RegisterSerializer
 
 
 @api_view(['GET'])

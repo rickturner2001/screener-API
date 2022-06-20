@@ -2,10 +2,13 @@ import {useContext, useEffect, useState} from "react";
 import AuthContext from "../context/AuthContext";
 import useAxios from "../utils/useAxsios";
 import {Hero} from "./Hero";
+import {Table} from "./Table";
+import {observe} from "web-vitals/dist/modules/lib/observe";
+import {NegativeSefiPlot, SefiPlot} from "./charts/SefiPlot";
 
 export const Application = () =>{
 
-    let [marketData, setMarketData] = useState([null])
+    let [marketData, setMarketData] = useState()
     let {authTokens, logoutUser} = useContext(AuthContext)
 
     let api = useAxios()
@@ -24,6 +27,7 @@ export const Application = () =>{
         getGeneralMarketData()
     }, [])
 
+    const tableEntriesData = {}
 
     const stats = (marketData) =>{
 
@@ -32,10 +36,13 @@ export const Application = () =>{
         const totalSignalsPerTicker = {}
         tickers.map((ticker, index) =>{
             totalSignalsPerTicker[ticker] = 0
+            tableEntriesData[ticker] = {}
             Object.keys(marketData.entries[ticker]).map((strategy, location) =>{
                 if(marketData.entries[ticker][strategy].status){
                     totalSignalsPerTicker[ticker]++
                 }
+                tableEntriesData[ticker][strategy] = marketData.entries[ticker][strategy].status
+                return
             })
         })
         return (
@@ -63,17 +70,85 @@ export const Application = () =>{
         )
     }
 
-    return(
-        <div className="hero min-h-screen bg-base-200">
-            <div className="hero-content flex-col lg:flex-row-reverse">
-                <div>
-                    <h1 className="text-5xl font-bold">Some Title</h1>
-                    <p className="py-6">Provident cupiditate voluptatem et in. Quaerat fugiat ut assumenda excepturi
-                        exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
-                    {marketData ? stats(marketData): <></>}
+    const fixUnderscoredKey = (key) =>{
+        let splitKey = key.split("_")
+        let fullKey = ""
+        for (let word of splitKey){
+            if (word === splitKey[splitKey.length]){
+                fullKey += word[0].toUpperCase() + word.substring(1)
+            }else {
+                fullKey += word[0].toUpperCase() + word.substring(1) + " "
+            }
+        }
+        return fullKey
+    }
 
+    const getEntriesTableData = () =>{
+
+            const entriesKey = Object.keys(marketData)[1]
+            const tickers = Object.keys(marketData[entriesKey])
+
+            const entriesTableHeads = Object.keys(marketData[entriesKey][tickers[0]]).map((head) =>{
+                return fixUnderscoredKey(head)
+            })
+            entriesTableHeads.unshift("Ticker")
+            entriesTableHeads.unshift("")
+            const entriesTableRows = []
+            tickers.map((ticker, index) => {
+                const temp = [index + 1, ticker]
+                Object.keys(tableEntriesData[ticker]).map((strategy) => {
+                    let key = String(tableEntriesData[ticker][strategy])
+                    const firstLetter = key[0].toUpperCase()
+                    let newKey = firstLetter + key.slice(1, key.length)
+                    temp.push(newKey)
+                })
+                entriesTableRows.push(temp)
+            })
+
+            return [entriesTableHeads, entriesTableRows]
+
+    }
+
+    return(
+
+        <div className='flex mt-10 ml-10 mr-10'>
+            {/*Left side*/}
+            <div>
+
+                    {marketData ?
+                        <div className='flex flex-col gap-16 '>
+                        {stats(marketData)}
+                            <div className='flex flex-col'>
+                                <div className="tabs tabs-boxed flex justify-center bg-base-100 mb-10">
+                                    <a className="tab tab-active">All</a>
+                                    <a className="tab">Single entries</a>
+                                    <a className="tab">Multiple entries</a>
+                                </div>
+                            <Table tableData={getEntriesTableData()} classesOnValues={{constraint : (value) =>{
+                                if(value === 'True'){
+                                    return "badge badge-success"
+                                }else if(value === "False"){
+                                    return "badge badge-error"
+                                }
+                            }
+
+                            }} paginationvalue={10}/>
+
+                            </div>
+
+                        </div>
+                        : <></>}
+
+            </div>
+
+        {/*Right side*/}
+            <div className='w-[100%] flex flex-col justify-center items-center'>
+                <div className='w-[70%]'>
+                    {marketData ? <SefiPlot marketData={marketData}/> : <></>}
+                    {marketData ? <NegativeSefiPlot marketData={marketData}/> : <></>}
                 </div>
             </div>
+
         </div>
     )
 }

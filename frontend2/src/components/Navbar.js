@@ -26,7 +26,7 @@ export const Navbar = (props) =>{
     }
     return(
         <>
-            <nav className="navbar bg-base-100">
+            <nav className="navbar bg-base-300">
                 <div className="navbar-start">
                     <div className='flex gap-4'>
                         <div className="dropdown">
