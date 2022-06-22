@@ -98,6 +98,7 @@ class SP500Analysis(MarketBreadthAnalysis):
 
     def sefi(self, ma_column='MA20') -> DataFrame:
         self.dates = self.market_data.query_all_dates()
+        print(self.dates)
 
         self.sp500 = GeneralMarketDataFetcher.oex_download_data(start=self.dates[0], end=self.dates[-1])
         self.sp500 = EnhancedDataframe.populate_dataframe(self.sp500, "SPX")

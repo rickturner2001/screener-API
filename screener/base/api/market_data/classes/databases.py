@@ -229,7 +229,7 @@ class SP500Database(Database):
         return beginning_date
 
     def clear_historical(self):
-        self._cursor.execute(f"delete from {self._historical_tablename}")
+        self._cursor.execute(f"delete from historical_data")
         self._connection.commit()
 
     # def update_db(self):
@@ -260,7 +260,7 @@ class SP500Database(Database):
         return read_sql(self.stmt_query_by_date(date), self._connection)
 
     def query_all_dates(self) -> List[str]:
-        dates = self._cursor.execute(f"SELECT DISTINCT (date) FROM {self._historical_tablename}").fetchall()
+        dates = self._cursor.execute(f"SELECT DISTINCT (date) FROM {self._historical_tablename} ORDER BY date").fetchall()
         return [date['date'] for date in dates]
 
     def get_latest_date(self) -> str:
