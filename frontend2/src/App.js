@@ -8,6 +8,7 @@ import {AuthProvider} from "./context/AuthContext";
 import {Navbar} from "./components/Navbar";
 import {Application} from "./components/Application";
 import {WatchLists} from "./pages/WatchLists";
+import {WatchlistView} from "./pages/WatchlistView";
 
 
 function App() {
@@ -15,10 +16,11 @@ function App() {
       <div className="App">
         <Router>
           <AuthProvider>
-              <Navbar></Navbar>
+          <Navbar></Navbar>
               <Route component={HomePage} path='/' exact/>
               <PrivateRoute component={Application} path='/application'/>
               <PrivateRoute component={WatchLists} path='/watchlists'/>
+              <PrivateRoute component={WatchlistView} path='/watchlist/:id'/>
             <Route component={LoginPage} path='/login'/>
           </AuthProvider>
         </Router>

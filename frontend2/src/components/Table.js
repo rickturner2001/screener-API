@@ -2,8 +2,9 @@ import {useEffect, useState} from "react";
 import {Chart} from "chart.js/auto";
 import {Bar} from "react-chartjs-2"
 
-export const Table = ({tableData, classesOnValues, paginationvalue}) =>{
+export const Table = ({tableData, classesOnValues, paginationvalue, isWatchlistTable, className}) =>{
 
+    const classes =  "flex flex-col gap-6 justify-center items-center w-[100%]" + (className ? ` ${className}` : "")
 
     let [tableHeads, tableRows] = tableData
 
@@ -11,7 +12,6 @@ export const Table = ({tableData, classesOnValues, paginationvalue}) =>{
     let [currentTableRows, setCurrentTableRows] = useState(tableRows.slice(
         currentBatch * paginationvalue - paginationvalue, currentBatch * paginationvalue))
 
-    console.log(`(${currentBatch * paginationvalue - paginationvalue}, ${currentBatch * paginationvalue})`)
     const nextPage = () =>{
         setCurrentBatch(currentBatch + 1)
         setCurrentTableRows(tableRows.slice(
@@ -27,7 +27,7 @@ export const Table = ({tableData, classesOnValues, paginationvalue}) =>{
 
 
     return(
-        <div className='flex flex-col gap-6 justify-center items-center w-[100%]'>
+        <div className={classes}>
         <div className="overflow-x-auto">
             <table className="table table-zebra w-full">
                 <thead>

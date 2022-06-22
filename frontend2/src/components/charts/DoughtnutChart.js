@@ -1,10 +1,10 @@
-import {Bar} from "react-chartjs-2";
+import {Doughnut} from "react-chartjs-2";
 import React from "react";
 
-const BarChart = ({data}) =>{
+const DoughnutChart = ({data}) =>{
     return (
         <div>
-            <Bar
+            <Doughnut
                 data={data}
                 options={{
                     responsive: true,
@@ -21,4 +21,4 @@ const BarChart = ({data}) =>{
 };
 
 
-export default BarChart
+export default DoughnutChart
