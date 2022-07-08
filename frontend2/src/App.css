@@ -1,3 +1,14 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer utilities {
+    @keyframes mypulse {
+        50% {
+            opacity: .7;
+        }
+    }
+    .animate-pulse {
+        animation: mypulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+}
