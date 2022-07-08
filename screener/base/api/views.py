@@ -8,7 +8,7 @@ from .serializers import WatchlistSerializer
 from base.api.market_data.api_requests import general_market_data_request
 from django.contrib.auth.models import User
 from .serializers import RegisterSerializer
-from rest_framework import generics
+from rest_framework import generics, status
 from rest_framework.permissions import AllowAny
 import pandas as pd
 from base.api.market_data.config import file_path
@@ -51,7 +51,7 @@ def get_routes(request):
     return Response(routes)
 
 
-@api_view(["GET", "POST", "DELETE", "PUT"])
+@api_view(["GET", "POST", "PUT"])
 @permission_classes([IsAuthenticated])
 def watchlist_actions(request):
     if request.method == "GET":
@@ -65,9 +65,43 @@ def watchlist_actions(request):
             serializer.save()
             return Response(serializer.data)
 
-    elif request.method == "DELETE":
-        print(request.data)
-        return Response({"status": "good"})
+
+@api_view(["PUT"])
+@permission_classes([IsAuthenticated])
+def update_watchlist(request, watchlist_id):
+    if request.method == "PUT":
+        user = request.user
+        watchlists = user.watchlist_set.all()
+        watchlist = watchlists.get(id=watchlist_id)
+        serializer = WatchlistSerializer(watchlist, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+@api_view(['GET'])
+@permission_classes([IsAuthenticated])
+def get_watchlist(request, watchlist_id):
+    if request.method == "GET":
+        user = request.user
+        watchlists = user.watchlist_set.all()
+        watchlist = watchlists.get(id=watchlist_id)
+        serializer = WatchlistSerializer(watchlist)
+
+        return Response(serializer.data)
+
+
+
+@api_view(['DELETE'])
+@permission_classes([IsAuthenticated])
+def watchlist_remove(request, pk):
+    if request.method == "DELETE":
+        user = request.user
+        watchlists = user.watchlist_set.all()
+        watchlist = watchlists.get(id=pk)
+        watchlist.delete()
+        return Response({"status": "success"})
 
 
 

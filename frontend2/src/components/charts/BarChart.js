@@ -1,7 +1,7 @@
 import {Bar} from "react-chartjs-2";
 import React from "react";
 
-const BarChart = ({data}) =>{
+const BarChart = ({data, text}) =>{
     return (
         <div>
             <Bar

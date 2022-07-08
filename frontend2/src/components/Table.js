@@ -1,6 +1,7 @@
 import {useEffect, useState} from "react";
 import {Chart} from "chart.js/auto";
 import {Bar} from "react-chartjs-2"
+import {ChevronDoubleLeftIcon, ChevronDoubleRightIcon} from "@heroicons/react/solid";
 
 export const Table = ({tableData, classesOnValues, paginationvalue, isWatchlistTable, className}) =>{
 
@@ -13,9 +14,11 @@ export const Table = ({tableData, classesOnValues, paginationvalue, isWatchlistT
         currentBatch * paginationvalue - paginationvalue, currentBatch * paginationvalue))
 
     const nextPage = () =>{
+        console.debug(`Transitioning from batch: ${currentBatch}`)
         setCurrentBatch(currentBatch + 1)
+        console.debug(`To batch: ${currentBatch}`)
         setCurrentTableRows(tableRows.slice(
-            currentBatch * paginationvalue - paginationvalue, currentBatch * paginationvalue))
+            currentBatch + 1 * paginationvalue - paginationvalue, currentBatch + 1 * paginationvalue))
     }
 
     const previousPage = () =>{
@@ -51,9 +54,9 @@ export const Table = ({tableData, classesOnValues, paginationvalue, isWatchlistT
         </div>
 
         {paginationvalue ? <div className="btn-group">
-            <button className="btn" disabled={currentBatch <=1} onClick={previousPage}>«</button>
+            <button className={`btn ${currentBatch <= 1 ? "btn-disabled" : ""}`}  onClick={previousPage}><ChevronDoubleLeftIcon className={'w-5 h-5'}/></button>
             <button className="btn">Page {currentBatch}</button>
-            <button className="btn"  onClick={nextPage}>»</button>
+            <button className="btn"  onClick={nextPage}><ChevronDoubleRightIcon className={'w-5 h-5'}/></button>
         </div> : <></>}
 
         </div>

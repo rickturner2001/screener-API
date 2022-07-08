@@ -114,8 +114,10 @@ def market_status_to_dict() -> dict:
     """
     Executes all utility functions for API data and puts them all together in a dictionary
     """
+    print("market status to dict")
     sp500_database = SP500Database()
     sp500_database.connect_existing_database(db_path / "sp500.sqlite")
+    populate_sp500(sp500_database, update=False)
     market_analysis = SP500Analysis(sp500_database)
     market_analysis.sefi()
     market_analysis.adr_analysis()
@@ -185,17 +187,15 @@ def general_market_data_request():
     req_year, req_month, req_day, req_hour, req_minute, _, _, _, _ = dtime.timetuple()
     is_weekend = True if current_datetime.weekday() in [5, 6] else False
     is_afterhours = True if hour >= 16 or (hour < 9) else False
-    if is_weekend or is_afterhours:
+    if is_weekend or is_afterhours or 1 == 1:
         if [req_year, req_month, req_day] == [year, month, day] or 1 == 1:
             _, data = parse_last_request(sp500_database, True)
             return json.loads(data)
         else:
+            print("Is True")
             data = market_status_to_dict()
             sp500_database.insert_api_data(str(current_datetime), data)
             return data
     else:
-        populate_sp500(sp500_database, update=True)
+        populate_sp500(sp500_database, update=False)
         return market_status_to_dict()
-
-
-
