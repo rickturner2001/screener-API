@@ -31,8 +31,8 @@ export const Table = ({tableData, classesOnValues, paginationvalue, isWatchlistT
 
     return(
         <div className={classes}>
-        <div className="overflow-x-auto">
-            <table className="table table-zebra w-full">
+        <div className="overflow-x-auto shadow-2xl">
+            <table className="table table-zebra w-full ">
                 <thead>
                 <tr className='text-center'>
                     {tableHeads.map((head, index) => <th key={index}>{head}</th>)}
@@ -53,7 +53,7 @@ export const Table = ({tableData, classesOnValues, paginationvalue, isWatchlistT
             </table>
         </div>
 
-        {paginationvalue ? <div className="btn-group">
+        {paginationvalue ? <div className="btn-group mb-3">
             <button className={`btn ${currentBatch <= 1 ? "btn-disabled" : ""}`}  onClick={previousPage}><ChevronDoubleLeftIcon className={'w-5 h-5'}/></button>
             <button className="btn">Page {currentBatch}</button>
             <button className="btn"  onClick={nextPage}><ChevronDoubleRightIcon className={'w-5 h-5'}/></button>

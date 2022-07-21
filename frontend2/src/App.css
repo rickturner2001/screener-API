@@ -11,4 +11,202 @@
     .animate-pulse {
         animation: mypulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
     }
+
+    @keyframes suddenAppearance {
+        from {
+            transform: translateX(-100%);
+        }
+        to {
+            transform: translateX(0%);
+        }
+
+    }
+
+    .animate-appear {
+        animation: suddenAppearance 0.5s linear;
+    }
+
+
+    @keyframes leftSlide {
+        0% {
+            left: -100px;
+
+        }
+
+        50% {
+            left: 0;
+        }
+
+    }
+    .animation-enter-from-right {
+        animation: leftSlide 0.5s linear;
+    }
+
+
+    @keyframes slide-in {
+        from {
+            transform: translateX(-100%);
+            opacity: 0.25;
+        }
+        to {
+            transform: translateX(0%);
+            opacity: 1;
+        }
+    }
+
+
+    .animation-slide-in {
+        animation: slide-in 0.5s linear;
+    }
+
+
+    @keyframes drop-in {
+        from {
+            transform: rotate(-30deg) translateY(-100%);
+            opacity: 0;
+        }
+        to {
+            transform: rotate(0deg) translateY(0%);
+            opacity: 1;
+        }
+    }
+
+    .animation-drop-in {
+        animation: drop-in 0.5s linear;
+    }
+
+
+    @keyframes slide-up {
+        from {
+            transform: translateX(100%);
+            opacity: 0.25;
+        }
+        to {
+            transform: translateX(0%);
+            opacity: 1;
+        }
+    }
+    .animation-slide-up {
+        animation: slide-up 0.5s ease-out;
+    }
+
+    @keyframes keep-sliding-up {
+        from {
+            transform: translateY(0%);
+            opacity: 1;
+        }
+        to {
+            transform: translateY(-150%);
+            opacity: 0;
+        }
+    }
+    .animation-keep-sliding-up {
+        animation: keep-sliding-up 0.5s ease-in;
+    }
+
+    @keyframes appear {
+        from {
+            opacity: 0.25;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+    .animation-appear {
+        animation: appear 0.5s ease-out;
+    }
+
+
+    @keyframes shrink {
+        from {
+            transform: scale(1);
+
+            opacity: 1;
+        }
+        to {
+            opacity: 0;
+            transform: scale(0);
+        }
+    }
+    .animation-shrink {
+        animation: shrink 1s ease-in-out;
+    }
+
+
+    @keyframes expand {
+        from {
+            opacity: 0;
+            transform: scale(0);
+        }
+        to {
+            opacity: 1;
+            transform: scale(1);
+        }
+    }
+    .animation-expand {
+        animation: expand 1s ease-in-out;
+    }
+
+
+    @keyframes firstAppearance {
+        from {
+            opacity: 0;
+            transform: translateY(100%);
+        }
+
+        80% {
+            transform: translateY(-10%);
+        }
+
+        to {
+            opacity: 1;
+            transform: translateY(0%);
+        }
+    }
+    .animation-first-appearance {
+        animation: firstAppearance 0.75s ease-out;
+    }
+
+    .animation-second-appearance {
+        animation: firstAppearance 1s ease-out;
+    }
+
+    .animation-third-appearance {
+        animation: firstAppearance 1.25s ease-out;
+    }
+
+    @keyframes slideToLeft {
+        from {
+            opacity: 0;
+            transform: translateX(100%);
+        }
+        to {
+            opacity: 1;
+            transform: translateX(0%);
+        }
+
+    }
+
+    .animation-slide-to-left{
+        animation: slideToLeft 0.7s ease-out;
+    }
+
+}
+
+
+[data-theme="emerald"] * {
+    /*border-radius: 0 !important;*/
+}
+
+.rounded-full {
+    border-radius: 999px !important;
+}
+
+.rounded-md {
+    border-radius: 10px !important;
+}
+
+.graph-width {
+    width: 28rem !Important;
+    height: 28rem !Important;
 }

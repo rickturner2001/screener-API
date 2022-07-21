@@ -47,7 +47,7 @@ export const Application = () =>{
             })
         })
         return (
-            <div className="stats shadow bg-base-300 ">
+            <div className="stats shadow-2xl ">
 
                 <div className="stat place-items-center">
                     <div className="stat-title">Entries</div>
@@ -119,7 +119,7 @@ export const Application = () =>{
                     {marketData ?
                         <div className='flex flex-col gap-16 '>
                         {stats(marketData)}
-                            <div className='flex flex-col'>
+                            <div className='flex flex-col bg-base-300 px-6 pt-4'>
                                 <div className="tabs tabs-boxed flex justify-center bg-base-100 mb-10">
                                     <a className="tab tab-active">All</a>
                                     <a className="tab">Single entries</a>
@@ -144,9 +144,14 @@ export const Application = () =>{
 
         {/*Right side*/}
             <div className='w-[100%] flex flex-col justify-center items-center'>
-                <div className='w-[70%]'>
-                    {marketData ? <SefiPlot marketData={marketData}/> : <></>}
-                    {marketData ? <NegativeSefiPlot marketData={marketData}/> : <></>}
+                <div className='w-[80%] flex flex-col gap-10 bg-current px-4'>
+                    <div className='shadow-md'>
+                        {marketData ? <SefiPlot marketData={marketData}/> : <></>}
+                    </div>
+                    <div className='shadow-md'>
+                        {marketData ? <NegativeSefiPlot marketData={marketData}/> : <></>}
+
+                    </div>
                 </div>
             </div>
 

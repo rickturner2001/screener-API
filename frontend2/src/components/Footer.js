@@ -2,7 +2,6 @@
 export const Footer = () => {
     return(
         <>
-            <h1>data</h1>
             <footer className="footer footer-center p-10 bg-base-300 text-base-content rounded">
                 <div className="grid grid-flow-col gap-4">
                     <a  className="link link-hover">About us</a>

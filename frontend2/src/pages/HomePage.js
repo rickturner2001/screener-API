@@ -14,6 +14,7 @@ export const HomePage = () =>{
                             exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.' img={bgTest}
                             hasMenu={true}
             ></Hero>
+
             <Section></Section>
             <Footer></Footer>
         </>

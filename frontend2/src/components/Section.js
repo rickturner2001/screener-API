@@ -39,7 +39,7 @@ export const Section = () =>{
                             exercitationem quasi. In deleniti eaque aut repudiandae et a id nisi.</p>
                         <div className='flex items-center'>
                             <button  className="btn btn-primary" onClick={copyToClipboard}><DuplicateIcon className='w-5 h-5 mr-2'/> Clone IT</button>
-                            <p className='ml-2 px-2 py-2 rounded-xl w-max text-center text-white text-3xlxl h-10 bg-base-100 transition-all duration-300'
+                            <p className='ml-2 px-2 py-2 rounded-xl w-max text-center  text-3xlxl h-10 bg-base-100 transition-all duration-300'
                                style={isCopy ? {opacity: 1, visibility:"visible"} : {opacity: 0, visibility: "hidden"}}>Copied to Clipboard</p>
                         </div>
 

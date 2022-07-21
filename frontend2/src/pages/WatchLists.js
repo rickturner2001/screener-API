@@ -1,7 +1,9 @@
 import {useContext, useEffect, useState} from "react";
 import AuthContext from "../context/AuthContext";
 import useAxios from "../utils/useAxsios";
-import {SearchIcon} from "@heroicons/react/solid";
+import {CheckCircleIcon, SearchIcon, TrashIcon} from "@heroicons/react/outline";
+import {Button} from "react-daisyui";
+import {DocumentAddIcon, PlusCircleIcon, PlusIcon} from "@heroicons/react/solid";
 
 
 
@@ -16,6 +18,8 @@ export const WatchLists = () => {
     const [selectedStocks, setSelectedStocks] = useState([])
     const [watchlistToEdit, setWatchlistsToEdit] = useState([])
     const [currentSearch, setCurrentSearch] = useState("")
+    const [newWatchlistName, setNewWatchlistName] = useState("")
+    const[isAddingWatchlist, setIsAddingWatchlist] = useState(false)
 
 
 
@@ -32,7 +36,6 @@ export const WatchLists = () => {
         let response = await api.get('/api/watchlists/')
 
         if (response.status === 200) {
-            response.data.unshift({id: false, name: "Your Watchlists", tickers: null})
             setWatchlists(response.data)
         }
 
@@ -48,8 +51,9 @@ export const WatchLists = () => {
 
     const selectedTickersMenu = (isEmpty) =>{
         return(
+            <div className= {'flex h-[65%]'}>
             <div tabIndex="0"
-                 className="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box">
+                 className="collapse collapse-arrow border border-base-300 bg-base-100 rounded-box h-max">
                 <div className="collapse-title text-xl font-medium text-center gap-2 flex justify-center">
                     Selected
                     {selectedStocks.length && isEmpty ? <div className="badge badge-secondary">+{selectedStocks.length}</div>: <></>}
@@ -65,6 +69,7 @@ export const WatchLists = () => {
                         })}
                     </ul>
                 </div>
+            </div>
             </div>
         )
     }
@@ -89,14 +94,12 @@ export const WatchLists = () => {
                                                    let updated = selectedStocks
                                                    updated.push(ticker)
                                                    setSelectedStocks(updated)
-                                                   console.log(selectedStocks)
 
                                                } else {
                                                    const index = selectedStocks.indexOf(ticker)
                                                    let temp = selectedStocks
                                                    temp.splice(index, 1)
                                                    setSelectedStocks(temp)
-                                                   console.log(selectedStocks)
                                                }
 
                                                setUpdateMenu(
@@ -127,7 +130,6 @@ export const WatchLists = () => {
     const TickersTable = ({tickersInfo}) => {
         const paginationvalue = 10
 
-        console.log("Updating")
         let tableRows = Object.keys(tickersInfo).map((ticker, i) => {
             return [
                 ticker,
@@ -161,22 +163,23 @@ export const WatchLists = () => {
         const tableHeads = ["", "Symbol", "Security", "Sector", "Sub-Industry"]
         const [currentBatch, setCurrentBatch] = useState(1)
         let [currentTableRows, setCurrentTableRows] = useState(tableRows.slice(
-            (currentBatch + 1) * paginationvalue - paginationvalue, (currentBatch + 1) * paginationvalue))
+            (currentBatch) * paginationvalue - paginationvalue, (currentBatch) * paginationvalue))
 
         const nextPage = () => {
             setCurrentBatch(currentBatch + 1)
+
             setCurrentTableRows(tableRows.slice(
-                currentBatch * paginationvalue - paginationvalue, currentBatch * paginationvalue))
+                (currentBatch  + 1)* paginationvalue - paginationvalue, (currentBatch + 1) * paginationvalue))
         }
 
         const previousPage = () => {
             setCurrentBatch(currentBatch - 1)
             setCurrentTableRows(tableRows.slice(
-                currentBatch * paginationvalue - paginationvalue, currentBatch * paginationvalue))
+                (currentBatch - 1)* paginationvalue - paginationvalue, (currentBatch - 1)* paginationvalue))
         }
         return (
             <div className='flex flex-col gap-6 justify-center items-center w-[70rem]'>
-                <div className="overflow-x-auto">
+                <div className="overflow-x-auto shadow-2xl">
                     <table className="table table-zebra  w-[70rem]">
                         <thead>
                         <tr className='text-center'>
@@ -233,29 +236,72 @@ export const WatchLists = () => {
                         <div className="card w-96 bg-neutral text-neutral-content">
                             <div className="card-body items-center text-center">
                                 <h2 className="card-title">Watchlist Menu</h2>
-                                <p className={'mb-3'}>Click on the green icon in the table for each stock you wish to
+                                <p className={'mb-3'}>Click the checkboxes in the table for each stock you wish to
                                     add to your watchlists</p>
                                 <div className="card-actions justify-end flex-nowrap gap-4">
                                     <label htmlFor="my-drawer-4"
                                            className="drawer-button btn btn-secondary">Inspect</label>
-                                    <label htmlFor="my-drawer-4" className="drawer-button btn btn-accent">Add
-                                        Stocks</label>
+                                    <button  className="btn btn-accent" onClick={() => setIsAddingWatchlist(true)}>
+                                        <p>New Watchlist</p>
+                                        <PlusCircleIcon className={' ml-3 w-5 h-5'}/>
+                                        </button>
                                 </div>
 
                             </div>
                         </div>
-                        <div className="card flex-shrink-0 w-full max-w-sm shadow-2xl bg-base-300">
-                            <div className="card-body">
-                                <div className="form-control justify-center items-center gap-4">
-                                    <h2 className="card-title">New Watchlist</h2>
-                                    <input type="text" placeholder="Cool Stocks" className="input input-bordered"/>
+                        {isAddingWatchlist ? <div>
 
-                                </div>
-                                <div className="form-control mt-6">
-                                    <button className="btn btn-primary">Create Watchlist</button>
+                            <div className="card w-96 bg-base-300 shadow-xl animation-enter-from-right">
+                                <div className="card-body">
+                                    <div className="form-control w-full max-w-xs">
+                                        <label className="label">
+                                            <span className="label-text">New watchlist title</span>
+                                        </label>
+                                        <div className={'flex'}>
+                                            <input type="text" placeholder="Type here"
+                                                   className="input input-bordered w-full max-w-xs"/>
+                                            <button className={'btn btn-primary'}><PlusIcon className={'w-5 h-5'}/></button>
+                                        </div>
+
+                                    </div>
                                 </div>
                             </div>
-                        </div>
+
+
+                        </div>  : <></>}
+                        <ul className="menu bg-base-100 w-full bg-neutral text-accent-content text-center">
+                            {watchlists.map((watchlist, index) => {
+                                return (
+                                    <li className={'bg-neutral flex justify-around'} key={index}>
+                                            <div className={'flex justify-around active:bg-secondary'}>
+
+                                               <p className={'w-1/2'}>{watchlist.name}</p>
+                                                <TrashIcon className={'w-6 h-6 stroke-error'}/>
+                                            </div>
+                                    </li>
+
+                                )
+                            })}
+                            <button className='btn btn-primary' onClick={async () => {
+                                watchlistToEdit.map((async watchlist => {
+                                    // const currentTickers = JSON.parse(getTickersByID(watchlists, watchlist)[0])
+                                    const currentTickers = JSON.parse(getTickersByID(watchlists, watchlist)[0])
+                                    const newTickers = [...selectedStocks, ...currentTickers]
+                                    const response = await api.put(`api/update-watchlist/${watchlist}/`, {
+                                        user: user.user_id,
+                                        name: getNameByID(watchlists, watchlist)[0],
+                                        tickers: JSON.stringify(newTickers)
+                                    })
+
+                                    window.location.href = `/watchlist/${watchlist}`
+                                }))
+                                setSelectedStocks([])
+                                setLengthStocks(0)
+                                setWatchlistsToEdit([])
+                            }
+                            }>Confirm
+                            </button>
+                        </ul>
                     </div>
 
                     <div className='flex gap-8'>
@@ -288,50 +334,11 @@ export const WatchLists = () => {
 
             </div>
             {/*Regular view*/}
-            {watchlists ? <div className="drawer-side">
-                <label htmlFor="my-drawer-4" className="drawer-overlay"></label>
-                <ul className="menu p-4 overflow-y-auto w-80 bg-base-100 text-base-content">
-                    {watchlists.map((watchlist, index) => {
-                        return (
-                            <li className={'rounded-none'} key={index}><a className={'rounded-none'} onClick={(e) => {
-                                e.target.classList.toggle("active")
-                                if (e.target.classList.contains("active")) {
-                                    let updated = watchlistToEdit
-                                    updated.push(watchlist.id)
-                                    setWatchlistsToEdit(updated)
-                                } else {
-                                    const index = watchlistToEdit.indexOf(watchlist.id)
-                                    let temp = watchlistToEdit
-                                    temp.splice(index, 1)
-                                    setWatchlistsToEdit(temp)
-                                }
-                            }}>{watchlist.name}</a></li>
-                        )
-                    })}
-                    <button className='btn btn-secondary mt-6' onClick={async () => {
-                        watchlistToEdit.map((async watchlist => {
-                            // const currentTickers = JSON.parse(getTickersByID(watchlists, watchlist)[0])
-                            // console.log(currentTickers)
-                            console.log("Tickers in here")
-                            const currentTickers = JSON.parse(getTickersByID(watchlists, watchlist)[0])
-                            const newTickers = [...selectedStocks, ...currentTickers]
-                            const response = await api.put(`api/update-watchlist/${watchlist}/`, {
-                                user: user.user_id,
-                                name: getNameByID(watchlists, watchlist)[0],
-                                tickers: JSON.stringify(newTickers)
-                            })
+            {/*{watchlists ? <div className="drawer-side">*/}
+            {/*    <label htmlFor="my-drawer-4" className="drawer-overlay"></label>*/}
 
-                            window.location.href = `/watchlist/${watchlist}`
-                        }))
-                        setSelectedStocks([])
-                        setLengthStocks(0)
-                        setWatchlistsToEdit([])
-                    }
-                    }>Confirm
-                    </button>
-                </ul>
 
-            </div> : <></>}
+            {/*</div> : <></>}*/}
         </div>
 
     );
